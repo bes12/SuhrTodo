@@ -13,7 +13,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String TABLE_TODO = "todo";
     private static final String ID = "id";
     private static final String NAME = "name";
-    private static final String DUE = "date";
+    private static final String DAY = "day";
+    private static final String MONTH = "month";
+    private static final String YEAR = "year";
 
     public DatabaseManager(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -23,7 +25,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
         //build sql create statement
         String sqlCreate = "create table " + TABLE_TODO + "( " + ID;
         sqlCreate += " integer primary key autoincrement, " + NAME;
-        sqlCreate += " text, " + DUE + " real )";
+        sqlCreate += " text, " + DAY + " real ";
+        sqlCreate += " text, " + MONTH + " real ";
+        sqlCreate += " text, " + YEAR + " real )";
 
         db.execSQL(sqlCreate);
     }
@@ -39,9 +43,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String sqlInsert = "insert into " + TABLE_TODO;
         sqlInsert += " values( null, '" + todo.getName();
-        sqlInsert += "', '" + todo.getDay() + "', '";
-        sqlInsert += todo.getMonth() + "', '";
-        sqlInsert += todo.getYear() + "' ) ";
+        sqlInsert += "', '" + todo.getDay() + "', '" + todo.getMonth() + "', '" + todo.getYear() + "' ) ";
 
         db.execSQL(sqlInsert);
         db.close();
@@ -56,12 +58,14 @@ public class DatabaseManager extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void updateById(int id, String name, String due){
+    public void updateById(int id, String name, int day, int month, int year){
         SQLiteDatabase db = this.getWritableDatabase();
 
         String sqlUpdate = "update " + TABLE_TODO;
         sqlUpdate += " set " + NAME + " = '" + name + "', ";
-        sqlUpdate += DUE + " = '" + due + "'";
+        sqlUpdate += DAY + " = '" + day + "'";
+        sqlUpdate += MONTH + " = '" + month + "'";
+        sqlUpdate += YEAR + " = '" + year + "'";
         sqlUpdate += " where " +  ID + " = " + id;
 
         db.execSQL(sqlUpdate);
@@ -82,7 +86,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
             todos.add(currentTodo);
         }
         db.close();
-        cursor.close();
+        //cursor.close();
         return todos;
     }
 
@@ -97,8 +101,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
         if(cursor.moveToFirst())
             todo = new Todo(Integer.parseInt(cursor.getString(0)),
                     cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getInt(4));
-        db.close();
-        cursor.close();
+        //db.close();
+        //cursor.close();
         return todo;
     }
 }

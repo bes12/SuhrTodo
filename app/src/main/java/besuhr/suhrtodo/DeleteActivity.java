@@ -37,6 +37,7 @@ public class DeleteActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 DeleteActivity.this.finish();
+                overridePendingTransition(R.anim.fade_in_and_scale, 0);
             }
         });
 

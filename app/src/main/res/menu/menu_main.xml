@@ -15,13 +15,13 @@
         app:showAsAction="ifRoom"
         />
 
-<!--    <item
+    <item
         android:id="@+id/action_update"
         android:title="@string/update"
-        android:icon="@android:drawable/ic_menu_edit"
+        android:icon="@android:drawable/ic_menu_revert"
         app:showAsAction="ifRoom"
         />
--->
+
 </menu>
 
 <!-- Page 180 -->

@@ -41,5 +41,6 @@ public class InsertActivity extends AppCompatActivity{
     public void goBack(View v)
     {
         this.finish();
+        overridePendingTransition(R.anim.slide_from_right, 0);
     }
 }

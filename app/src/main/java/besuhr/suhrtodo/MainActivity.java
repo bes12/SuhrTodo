@@ -1,6 +1,7 @@
 package besuhr.suhrtodo;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.widget.GridLayout;
 import android.widget.ScrollView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
     private DatabaseManager dbManager;
@@ -52,15 +54,28 @@ public class MainActivity extends AppCompatActivity {
             TodoButton[] buttons = new TodoButton[todos.size()];
             ButtonHandler bh = new ButtonHandler();
 
+            Calendar c = Calendar.getInstance();
+            int mYear = c.get(Calendar.YEAR);
+            int mMonth = c.get(Calendar.MONTH);
+            int mDay = c.get(Calendar.DAY_OF_MONTH);
+
             //fill grid
             int i = 0;
             for (Todo todo : todos){
                 buttons[i] = new TodoButton(this, todo);
-                buttons[i].setText(todo.getName() + "\n" + todo.getDay() + todo.getMonth() + todo.getYear());
+                buttons[i].setText(todo.getName() + "\n" + todo.getDay() + "/" + todo.getMonth() + "/" + todo.getYear());
 
-                buttons[i].setOnClickListener(bh);
+               buttons[i].setOnClickListener(bh);
 
                 grid.addView(buttons[i], buttonWidth, GridLayout.LayoutParams.WRAP_CONTENT);
+                if (todo.getYear() < mYear){
+                    buttons[i].setBackgroundColor(0xFFFF0000);
+                } else if (todo.getYear() == mYear && todo.getMonth() < mMonth){
+                    buttons[i].setBackgroundColor(0xFFFF0000);
+                } else if (todo.getYear() == mYear && todo.getMonth() == mMonth && todo.getDay() < mDay){
+                    buttons[i].setBackgroundColor(0xFFFF0000);
+                } else
+                    buttons[i].setBackgroundColor(0xFF00FF00);
                 i++;
             }
             scrollView.addView(grid);
@@ -85,25 +100,26 @@ public class MainActivity extends AppCompatActivity {
                 Log.w("MainActivity","Add Selected");
                 Intent insertIntent = new Intent(this, InsertActivity.class);
                 this.startActivity(insertIntent);
+                overridePendingTransition(R.anim.slide_from_left, 0);
                 return true;
             case R.id.action_delete:
                 Intent deleteIntent = new Intent(this, DeleteActivity.class);
                 this.startActivity(deleteIntent);
+                overridePendingTransition(R.anim.fade_in_and_scale, 0);
                 Log.w("MainActivity","Delete Selected");
                 return true;
-            //case R.id.action_update:
-                //Intent updateIntent = new Intent(this, UpdateActivity.class);
-                //this.startActivity(updateIntent);
-                //Log.w("MainActivity","Update Selected");
-                //return true;
+            case R.id.action_update:
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private class ButtonHandler implements View.OnClickListener {
-        public void onClick(View v){
+   private class ButtonHandler implements View.OnClickListener {
+       public void onClick(View v){
 
-        }
-    }
+       }
+   }
 }
