@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateView(){
         ArrayList<Todo> todos = dbManager.selectAll();
-        if(todos.size() > 0){
+        if(todos.size() >= 0){
             //remove subviews inside scrollview if necessary
             scrollView.removeAllViewsInLayout();
 
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
             int i = 0;
             for (Todo todo : todos){
                 buttons[i] = new TodoButton(this, todo);
-                buttons[i].setText(todo.getName() + "\n" + todo.getDay() + "/" + todo.getMonth() + "/" + todo.getYear());
+                buttons[i].setText(todo.getName() + "\n" + todo.getMonth() + "/" + todo.getDay() + "/" + todo.getYear());
 
                buttons[i].setOnClickListener(bh);
 
@@ -108,10 +108,10 @@ public class MainActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.fade_in_and_scale, 0);
                 Log.w("MainActivity","Delete Selected");
                 return true;
-            case R.id.action_update:
-                Intent intent = getIntent();
-                finish();
-                startActivity(intent);
+            //case R.id.action_update:
+                //Intent intent = getIntent();
+                //finish();
+                //startActivity(intent);
             default:
                 return super.onOptionsItemSelected(item);
         }
